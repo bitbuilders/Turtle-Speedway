@@ -12,7 +12,7 @@ public class Goal : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponentInParent<Rammus>())
+        if (other.GetComponentInParent<Turtle>())
         {
             Race.Instance.FinishRace();
         }

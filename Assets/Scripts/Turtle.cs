@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Rammus : MonoBehaviour
+public class Turtle : MonoBehaviour
 {
     Movement movement;
     ForwardMovement forwardMovement;

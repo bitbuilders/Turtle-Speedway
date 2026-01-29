@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class RammusCam : MonoBehaviour
+public class TurtleCam : MonoBehaviour
 {
     [SerializeField]
     float TrailDistance = 10.0f;
@@ -14,7 +14,7 @@ public class RammusCam : MonoBehaviour
 
     Camera cam;
 
-    Rammus rammus = null;
+    Turtle turtle = null;
 
     void Awake()
     {
@@ -23,18 +23,18 @@ public class RammusCam : MonoBehaviour
 
     void LateUpdate()
     {
-        if (!rammus)
+        if (!turtle)
         {
-            rammus = FindFirstObjectByType<Rammus>(FindObjectsInactive.Exclude);
+            turtle = FindFirstObjectByType<Turtle>(FindObjectsInactive.Exclude);
         }
 
-        if (!rammus)
+        if (!turtle)
             return;
 
-        var targetForward = rammus.transform.forward;
+        var targetForward = turtle.transform.forward;
         targetForward.y = 0.0f;
         targetForward.Normalize();
-        var target = rammus.transform.position;
+        var target = turtle.transform.position;
         target += -targetForward * TrailDistance + Vector3.up * HeightOffset;
 
         transform.position = target;
