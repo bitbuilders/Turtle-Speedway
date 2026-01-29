@@ -1,6 +1,6 @@
 # Turtle Speedway
 
-A Unity game about a turtle that seems oddly familiar to a League of Legends character...
+A Unity game about a speedy turtle that seems oddly familiar to a League of Legends character... OK!
 
 ## Running the project
 You can conveniently play the build on the web from this site (via Unity Play):
