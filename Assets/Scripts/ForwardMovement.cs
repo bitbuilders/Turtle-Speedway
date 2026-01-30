@@ -33,9 +33,13 @@ public class ForwardMovement : MonoBehaviour
 
     Rigidbody body;
 
+    Spline spline;
+
     void Awake()
     {
         body = GetComponent<Rigidbody>();
+
+        spline = FindFirstObjectByType<Spline>();
 
         Speed = MinSpeed;
     }
@@ -44,6 +48,8 @@ public class ForwardMovement : MonoBehaviour
     {
         Speed += Acceleration * Time.deltaTime;
         Speed = Mathf.Clamp(MaxSpeed, MinSpeed, MaxSpeed + Boost);
+
+        Forward = spline.GetDir(transform.position);
     }
 
     void FixedUpdate()

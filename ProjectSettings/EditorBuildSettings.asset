@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Rammus Speedway.unity
+    path: Assets/Scenes/Turtle Speedway.unity
     guid: 9c67415ba1dd47549b3374e459303160
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 537da27ded7a635419b6beb629514dca, type: 3}
