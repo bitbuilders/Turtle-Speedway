@@ -12,9 +12,15 @@ public class TurtleCam : MonoBehaviour
     [SerializeField]
     float Pitch = 30.0f;
 
+    [SerializeField]
+    float YawSpeed = 1.0f;
+
     Camera cam;
 
     Turtle turtle = null;
+
+    float yaw = 0.0f;
+    float targetYaw = 0.0f;
 
     void Awake()
     {
@@ -32,13 +38,15 @@ public class TurtleCam : MonoBehaviour
             return;
 
         var targetForward = turtle.transform.forward;
-        targetForward.y = 0.0f;
-        targetForward.Normalize();
         var target = turtle.transform.position;
         target += -targetForward * TrailDistance + Vector3.up * HeightOffset;
 
         transform.position = target;
 
-        transform.rotation = Quaternion.Euler(Pitch, 0.0f, 0.0f);
+        var turtleYaw = turtle.transform.rotation.eulerAngles.y;
+        targetYaw = turtleYaw > 180.0f ? turtleYaw - 360.0f : turtleYaw;
+        yaw = Mathf.Lerp(yaw, targetYaw, Time.deltaTime * YawSpeed);
+
+        transform.rotation = Quaternion.Euler(Pitch, yaw, 0.0f);
     }
 }

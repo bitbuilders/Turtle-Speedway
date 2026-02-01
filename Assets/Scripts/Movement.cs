@@ -16,7 +16,7 @@ public class Movement : MonoBehaviour
     // [SerializeField]
     // float MaxBackwardInput = 0.5f;
 
-    Vector3 InputDirection = Vector3.zero;
+    public float steering { get; private set; }
 
     Rigidbody body;
 
@@ -28,15 +28,15 @@ public class Movement : MonoBehaviour
     void OnMove(InputValue iv)
     {
         var input = iv.Get<float>();
-        InputDirection = new Vector3(input, 0.0f, 0.0f);
+        steering = input;
     }
 
     void FixedUpdate()
     {
-        if (Mathf.Approximately(InputDirection.sqrMagnitude, 0.0f))
+        if (Mathf.Approximately(steering, 0.0f))
             return;
 
-        var force = InputDirection * SteeringStrength * SpeedFactor * Time.deltaTime;
+        var force = transform.right * steering * SteeringStrength * SpeedFactor * Time.deltaTime;
         // if (force.z > 0.0f) force.z *= MaxForwardInput;
         // else force.z *= MaxBackwardInput;
 

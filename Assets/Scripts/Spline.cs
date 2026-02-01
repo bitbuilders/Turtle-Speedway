@@ -1,6 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Spline : MonoBehaviour
 {
@@ -12,11 +17,7 @@ public class Spline : MonoBehaviour
     [SerializeField]
     GameObject editorSplinePointPrefab = null;
 
-    [SerializeField]
-    List<Vector3> points = new List<Vector3>();
-
-    [SerializeField]
-    List<SplinePointEditor> editorPoints = new List<SplinePointEditor>();
+    List<Transform> points = new List<Transform>();
 
     [SerializeField]
     public bool ShowSplinePoints = true;
@@ -25,7 +26,15 @@ public class Spline : MonoBehaviour
 
     public static Spline EditingSpline { get; set; }
 
-    bool clearing = false;
+    void Awake()
+    {
+        points = GetPoints();
+    }
+
+    List<Transform> GetPoints()
+    {
+        return GetComponentsInChildren<SplinePoint>().Select(p => p.transform).ToList();
+    }
 
     public void ToggleSplineEditing()
     {
@@ -36,45 +45,26 @@ public class Spline : MonoBehaviour
 
     public void AddSplinePoint(Vector3 point)
     {
-        points.Add(point);
+#if UNITY_EDITOR
+        var newPoint = (GameObject)PrefabUtility.InstantiatePrefab(editorSplinePointPrefab, transform);
+        newPoint.transform.position = point;
+        var p = newPoint.GetComponent<SplinePoint>();
 
-        var newPoint = Instantiate(editorSplinePointPrefab, point, Quaternion.identity, transform);
-        var editor = newPoint.GetComponent<SplinePointEditor>();
-        editor.spline = this;
-        editorPoints.Add(editor);
+        UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+#endif
     }
 
     public void ClearSplinePoints()
     {
-        clearing = true;
-        points.Clear();
-        foreach (var splinePointEditor in editorPoints)
+        foreach (var splinePoint in GetPoints())
         {
-            if (!splinePointEditor)
+            if (!splinePoint)
                 continue;
-            DestroyImmediate(splinePointEditor.gameObject);
+            DestroyImmediate(splinePoint.gameObject);
         }
-        editorPoints.Clear();
-        clearing = false;
-    }
-
-    public void UpdateSplinePosition(SplinePointEditor point, Vector3 newPosition)
-    {
-        points[editorPoints.IndexOf(point)] = newPosition;
-    }
-
-    public void OnSplinePointDeleted(SplinePointEditor point)
-    {
-        if (clearing)
-            return;
-
-        var index = editorPoints.IndexOf(point);
-        if (index < 0)
-            return;
-
-        points.RemoveAt(index);
-        // DestroyImmediate(editorPoints[index].gameObject);
-        editorPoints.RemoveAt(index);
+#if UNITY_EDITOR
+        UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+#endif
     }
 
     public Vector3 GetDir(Vector3 worldPoint)
@@ -86,8 +76,8 @@ public class Spline : MonoBehaviour
         float closestDist = float.MaxValue;
         for (int i = 0; i < points.Count - 1; ++i)
         {
-            Vector3 first = points[i];
-            Vector3 second = points[i + 1];
+            Vector3 first = points[i].position;
+            Vector3 second = points[i + 1].position;
             float rawDist = (second - first).sqrMagnitude;
             Vector3 dir = (second - first).normalized;
             Vector3 nearest = NearestPoint(worldPoint, first, dir);
@@ -118,6 +108,6 @@ public class Spline : MonoBehaviour
             return;
 
         Gizmos.color = Color.black;
-        Gizmos.DrawLineStrip(points.ToArray(), false);
+        Gizmos.DrawLineStrip(GetPoints().Select(p => p.transform.position).ToArray(), false);
     }
 }

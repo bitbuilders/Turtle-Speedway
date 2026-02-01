@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b6fba1ae039ff646ae59eb57f905267, type: 3}
+  m_Name: Enemy Colors
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyColors
+  Materials:
+  - {fileID: 2100000, guid: d550279ca7465e343bfa9c9c4bb4be6c, type: 2}
+  - {fileID: 2100000, guid: ee357ce287f20ad40811f810fa652e4e, type: 2}
+  - {fileID: 2100000, guid: 508d2709b69178e4fba946ac37763476, type: 2}
+  - {fileID: 2100000, guid: fdc850b0e6e352849bd7542cffd76134, type: 2}
+  - {fileID: 2100000, guid: c1d5772437a95f941b7ade6f08805fe1, type: 2}
