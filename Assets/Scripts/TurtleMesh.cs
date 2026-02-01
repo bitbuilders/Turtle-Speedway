@@ -32,13 +32,9 @@ public class TurtleMesh : MonoBehaviour
         if (Race.Instance.State == RaceState.Countdown)
             return;
 
-        // var currentPitch = transform.localRotation.eulerAngles.x;
         currentPitch += Time.deltaTime * rotationSpeed;
         currentPitch = currentPitch > 90.0f ? currentPitch - 180.0f : currentPitch;
-        print(currentPitch);
         transform.localRotation =Quaternion.Euler(0.0f, currentYaw, -currentRoll) * Quaternion.Euler(currentPitch, 0.0f, 0.0f) ;
-        // transform.localRotation = Quaternion.Euler(transform.localRotation.eulerAngles.x, currentYaw, -currentRoll);
-        // transform.Rotate(transform.parent.right, Time.deltaTime * rotationSpeed);
     }
 
     void LateUpdate()
